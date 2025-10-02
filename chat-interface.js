@@ -4,7 +4,7 @@ class ChatInterface {
         this.mode = 'side'; // 'side' or 'center'
         this.messages = [];
         this.isLoading = false;
-        this.apiUrl = 'http://127.0.0.1:8000/chat';
+        this.apiUrl = 'http://127.0.0.1:8000/api/chat';
         
         this.createChatInterface();
         this.attachEventListeners();
@@ -187,8 +187,9 @@ class ChatInterface {
         
         if (!message || this.isLoading) return;
         
-        // Add user message
+        // Add user message to UI and conversation history
         this.addMessage('user', message);
+        this.messages.push({ role: 'user', content: message });
         chatInput.value = '';
         
         // Show loading
@@ -196,20 +197,16 @@ class ChatInterface {
         this.isLoading = true;
         
         try {
-            // Prepare messages for API
-            const apiMessages = [
-                ...this.messages,
-                { role: 'user', content: message }
-            ];
-            
-            // Send to API
+            // Send to API with full conversation history
             const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream',
                 },
+                mode: 'cors',
                 body: JSON.stringify({
-                    messages: apiMessages
+                    messages: this.messages
                 })
             });
             
@@ -280,8 +277,7 @@ class ChatInterface {
             }
         }
         
-        // Store the complete message
-        this.messages.push({ role: 'user', content: this.messages[this.messages.length - 1]?.content || '' });
+        // Store the complete message in conversation history
         this.messages.push({ role: 'assistant', content: assistantMessage });
     }
 
