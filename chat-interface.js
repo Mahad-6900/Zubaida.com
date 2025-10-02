@@ -64,6 +64,7 @@ class ChatInterface {
                         </div>
                     </div>
                 </div>
+                
 
                 <!-- Input -->
                 <form class="chat-input-form" id="chat-form">
