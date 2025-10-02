@@ -1,0 +1,200 @@
+/*propmt Pulse Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Bounce Animation for Icon */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* toggle animation */
+@keyframes bounce {
+  0% { transform: scale(0.11); }
+  50% { transform: scale(2.1); }
+  100% { transform: scale(3); }
+}
+/* Animation when navbar is expanded */
+.circle-toggler[aria-expanded="true"] {
+  background: var(--color-primary); /* Red when open */
+  animation: glowPulseRed 1s infinite;
+}
+
+@keyframes glowPulseRed {
+  0% {
+    box-shadow: 0 0 0 rgba(220, 53, 69, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.9), 0 0 40px rgba(220, 53, 69, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(220, 53, 69, 0.6);
+  }
+}
+
+/* Line Transform → X */
+.circle-toggler[aria-expanded="true"] .toggler-line:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.circle-toggler[aria-expanded="true"] .toggler-line:nth-child(2) {
+  opacity: 0;
+}
+
+.circle-toggler[aria-expanded="true"] .toggler-line:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+
+/* about color/portfolio */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* resultcard */
+.fade-in-up {
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.bounce-icon {
+    animation: bounce 2s infinite;
+}
+
+
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/*scrollbar Fade-up animation */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* skills */
+
+@keyframes fill-bar {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: var(--progress-width);
+    }
+}
+
+/* tools */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
