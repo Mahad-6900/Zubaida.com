@@ -101,12 +101,12 @@ class ChatInterface {
         refreshBtn.addEventListener('click', () => this.refreshChat());
         chatForm.addEventListener('submit', (e) => this.handleSubmit(e));
 
-        // Close chat when clicking outside
+        // Close chat when clicking outside (but not in center mode)
         document.addEventListener('click', (e) => {
             const chatContainer = document.getElementById('chat-container');
             const toggleBtn = document.getElementById('chat-toggle-btn');
             
-            if (this.isOpen && !chatContainer.contains(e.target) && !toggleBtn.contains(e.target)) {
+            if (this.isOpen && this.mode === 'side' && !chatContainer.contains(e.target) && !toggleBtn.contains(e.target)) {
                 this.closeChat();
             }
         });
@@ -134,23 +134,14 @@ class ChatInterface {
         
         chatContainer.classList.remove('chat-open');
         toggleBtn.classList.remove('chat-active');
-    }
-
-    toggleMode() {
-        this.mode = this.mode === 'side' ? 'center' : 'side';
-        const chatContainer = document.getElementById('chat-container');
-        const maximizeBtn = document.getElementById('chat-maximize-btn');
         
+        // If in center mode, also remove center mode when closing
         if (this.mode === 'center') {
-            chatContainer.classList.add('chat-center-mode');
-            maximizeBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 16H8V14H5V16ZM8 8H5V10H8V8ZM14 19H16V16H14V19ZM16 8V5H14V8H16Z" fill="currentColor"/>
-                </svg>
-            `;
-            maximizeBtn.title = 'Minimize';
-        } else {
             chatContainer.classList.remove('chat-center-mode');
+            this.mode = 'side'; // Reset to side mode
+            
+            // Update the maximize button back to maximize icon
+            const maximizeBtn = document.getElementById('chat-maximize-btn');
             maximizeBtn.innerHTML = `
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 14H5V19H10V17H7V14ZM5 10H7V7H10V5H5V10ZM17 17H14V19H19V14H17V17ZM14 5V7H17V10H19V5H14Z" fill="currentColor"/>
@@ -158,6 +149,40 @@ class ChatInterface {
             `;
             maximizeBtn.title = 'Maximize';
         }
+    }
+
+    toggleMode() {
+        this.mode = this.mode === 'side' ? 'center' : 'side';
+        const chatContainer = document.getElementById('chat-container');
+        const maximizeBtn = document.getElementById('chat-maximize-btn');
+        const toggleBtn = document.getElementById('chat-toggle-btn');
+        
+        // Always ensure chat stays open and visible when switching modes
+        this.isOpen = true;
+        
+        // Use setTimeout to ensure DOM updates properly
+        setTimeout(() => {
+            chatContainer.classList.add('chat-open');
+            toggleBtn.classList.add('chat-active');
+            
+            if (this.mode === 'center') {
+                chatContainer.classList.add('chat-center-mode');
+                maximizeBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 16H8V14H5V16ZM8 8H5V10H8V8ZM14 19H16V16H14V19ZM16 8V5H14V8H16Z" fill="currentColor"/>
+                    </svg>
+                `;
+                maximizeBtn.title = 'Minimize';
+            } else {
+                chatContainer.classList.remove('chat-center-mode');
+                maximizeBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 14H5V19H10V17H7V14ZM5 10H7V7H10V5H5V10ZM17 17H14V19H19V14H17V17ZM14 5V7H17V10H19V5H14Z" fill="currentColor"/>
+                    </svg>
+                `;
+                maximizeBtn.title = 'Maximize';
+            }
+        }, 10);
     }
 
     refreshChat() {

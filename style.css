@@ -25,6 +25,8 @@
 
 html {
     scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -32,6 +34,8 @@ body {
     background-color: var(--color-dark);
     color: var(--color-light);
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .navbar {
@@ -87,7 +91,10 @@ body {
 }
 
 .navbar-brand img {
-    width: 60px;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border: 2px solid var(--color-primary);
 }
 
 .nav-item a {
@@ -126,22 +133,31 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 60px 0;
+    padding: 20px 0 80px 0;
     margin-left: 60px;
+    margin-top: -20px;
+    min-height: 75vh;
+}
+
+/* Remove any extra spacing from container */
+.container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 .hero-text h1 {
     font-size: var(--fs-xxl);
     font-weight: var(--fw-semibold);
-    line-height: 1.5;
-
+    line-height: 1.3;
+    margin-bottom: 15px;
 }
 
 .hero-text h2 {
     font-size: var(--fs-xl);
     font-weight: var(--fw-semibold);
-    line-height: 1.5;
+    line-height: 1.4;
     text-align: left;
+    margin-bottom: 20px;
 }
 
 
@@ -152,11 +168,11 @@ body {
 .btn-custom {
     background-color: var(--color-primary);
     color: var(--color-light);
-    font-size: 19px;
+    font-size: 20px;
     font-weight: var(--fw-semibold);
     border: none;
-    padding: 10px 20px;
-    margin-top: 20px;
+    padding: 12px 24px;
+    margin-top: 25px;
 }
 .btn-custom:hover {
     background-color: #57310e;
@@ -165,15 +181,15 @@ body {
 .social-icons a {
     color: var(--color-light);
     font-size: var(--fs-md);
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background-color: #0d1117;
     border-radius: 50%;
-    margin-right: 15px;
-    margin-top: 20px;
+    margin-right: 18px;
+    margin-top: 25px;
     transition: 0.3s;
     text-decoration: none;
 }
@@ -183,7 +199,8 @@ body {
 }
 
 .hero-img {
-    height: 390px;
+    height: 420px;
+    width: 420px;
     border-radius: 50%;
     background-color: var(--color-primary);
     display: flex;
@@ -191,16 +208,14 @@ body {
     justify-content: center;
     overflow: hidden;
     box-shadow: 0px 50px 90px black;
-
-
 }
 
 .hero-image {
     width: 100%;
     position: relative;
     z-index: 1;
-    margin-top: -60px;
-    height: 140%;
+    margin-top: -70px;
+    height: 150%;
 }
 
 
@@ -843,19 +858,37 @@ h2 {
         flex-direction: column;
         text-align: center;
         margin-left: 0;
+        padding: 10px 0 40px 0;
+        margin-top: -10px;
+        min-height: 65vh;
     }
 
     .hero-img {
         margin: 30px auto 0;
-        width: 300px;
-        height: 300px;
+        width: 320px;
+        height: 320px;
     }
 
     .hero-text h1 {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
+        margin-bottom: 12px;
     }
 
     .hero-text h2 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+        margin-bottom: 18px;
+    }
+
+    .btn-custom {
+        font-size: 18px;
+        padding: 10px 20px;
+        margin-top: 20px;
+    }
+
+    .social-icons a {
+        width: 45px;
+        height: 45px;
+        margin-right: 15px;
+        margin-top: 20px;
     }
 }
