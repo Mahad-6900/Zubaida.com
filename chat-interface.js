@@ -4,7 +4,7 @@ class ChatInterface {
         this.mode = 'side'; // 'side' or 'center'
         this.messages = [];
         this.isLoading = false;
-        this.apiUrl = 'https://mal-gilt.vercel.app/api/chat';
+        this.apiUrl = 'http://127.0.0.1:8000/chat';
         
         this.createChatInterface();
         this.attachEventListeners();
@@ -64,7 +64,7 @@ class ChatInterface {
                         </div>
                     </div>
                 </div>
-                
+
 
                 <!-- Input -->
                 <form class="chat-input-form" id="chat-form">
