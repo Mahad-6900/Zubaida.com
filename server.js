@@ -43,11 +43,6 @@ app.get('/contact', (req, res) => {
     res.sendFile(path.join(__dirname, 'contact.html'));
 });
 
-app.get('/chat-test', (req, res) => {
-    res.sendFile(path.join(__dirname, 'chat-test.html'));
-});
-
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
-    console.log(`Chat API available at http://localhost:${PORT}/api/chat`);
 });

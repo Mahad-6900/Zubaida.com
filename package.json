@@ -1,7 +1,22 @@
 {
+  "name": "zubad-port-chat",
+  "version": "1.0.0",
+  "description": "Zubad-port with AI Chat functionality",
+  "main": "chat-api.js",
+  "scripts": {
+    "start": "node server-setup.js",
+    "dev": "nodemon server-setup.js",
+    "chat-api": "node chat-api.js",
+    "chat-dev": "nodemon chat-api.js",
+    "test": "node test-chat.js"
+  },
   "dependencies": {
     "@ai-sdk/google": "^2.0.17",
+    "@google/generative-ai": "^0.2.1",
     "cors": "^2.8.5",
     "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
   }
 }

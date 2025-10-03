@@ -27,10 +27,6 @@
     {
       "source": "/contact",
       "destination": "/contact.html"
-    },
-    {
-      "source": "/chat-test",
-      "destination": "/chat-test.html"
     }
   ],
   "headers": [

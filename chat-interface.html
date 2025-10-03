@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zubaida's AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0A1628;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+            
+        }
+
+        .chat-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #0A1628;
+        }
+
+        .chat-header {
+            background: #ffb85a;
+            color: white;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-header-text h3 {
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .chat-header-text p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .chat-header-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chat-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .chat-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-messages {
+            flex: 1;
+            min-height: 0;
+            max-height: calc(100vh - 140px);
+            padding: 16px;
+            padding-bottom: 80px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: #0A1628;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: #FF6B5A #1A2942;
+            /* Ensure smooth scrolling and proper containment */
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Custom scrollbar for webkit browsers */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #1A2942;
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #FF6B5A;
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #FF8A7A;
+        }
+
+        .message {
+            margin-bottom: 16px;
+        }
+
+        .message.user {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .message.assistant {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.user .message-content {
+            background: #FF6B5A;
+            color: white;
+        }
+
+        .message.assistant .message-content {
+            background: #1A2942;
+            color: white;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #9CA3AF;
+            margin-top: 4px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .typing-dots {
+            background: #1A2942;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #9CA3AF;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .chat-input {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            background: #0A1628;
+            border-top: 1px solid #374151;
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            z-index: 1000;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .chat-input input {
+            flex: 1;
+            background: #1A2942;
+            border: 1px solid #374151;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .chat-input input::placeholder {
+            color: #9CA3AF;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: #FF6B5A;
+        }
+
+        .chat-input button {
+            background: #1A2942;
+            border: 1px solid #374151;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .chat-input button:hover {
+            background: #1A2942;
+            opacity: 0.8;
+        }
+
+        .chat-input button.send {
+            background: #FF6B5A;
+            border-color: #FF6B5A;
+        }
+
+        .chat-input button.send:hover {
+            background: #FF6B5A;
+            opacity: 0.9;
+        }
+
+        .welcome-message {
+            background: #1A2942;
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .welcome-message p {
+            margin: 0;
+        }
+
+        .welcome-time {
+            font-size: 12px;
+            color: #9CA3AF;
+            margin-top: 8px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .message-content {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="chat-header-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chat-header-text">
+                    <h3>Zubaida's AI Assistant</h3>
+                    <p></p>
+                </div>
+            </div>
+            <div class="chat-header-controls">
+                <button class="chat-btn" onclick="toggleMode()" title="Toggle Mode">
+                    <i class="fas fa-expand" id="mode-icon"></i>
+                </button>
+                <button class="chat-btn" onclick="closeChat()" title="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="messages">
+            <div class="message assistant">
+                <div class="message-content">
+                    <div class="welcome-message">
+                        <p>
+                            Hi! I'm Zubaida Malik's AI assistant. I warmly welcome you and I'm here to help with any questions about
+                            Zubaida's work, skills, and services. I can assist you with email writing, copywriting, content writing & content strategy using Zubaida's unique AI + psychology + strategy approach. With 50+
+                            successful projects and 80% client retention, I bring proven expertise to every conversation. How can I
+                            help you today?
+                        </p>
+                        <div class="welcome-time">11:16:55 AM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Ask me anything..." autocomplete="off">
+            <button class="send" onclick="sendMessage()" title="Send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let isTyping = false;
+        let messageCount = 0;
+
+        // Auto-scroll to bottom
+        function scrollToBottom() {
+            const messages = document.getElementById('messages');
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Enhanced mouse wheel scrolling
+        function enhanceScrolling() {
+            const messages = document.getElementById('messages');
+            
+            // Add smooth scrolling on mouse wheel with better sensitivity
+            messages.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                const delta = e.deltaY;
+                const scrollAmount = 30; // Reduced for smoother scrolling
+                
+                if (delta > 0) {
+                    // Scrolling down
+                    messages.scrollTop += scrollAmount;
+                } else {
+                    // Scrolling up
+                    messages.scrollTop -= scrollAmount;
+                }
+            }, { passive: false });
+
+            // Add keyboard navigation support
+            messages.addEventListener('keydown', function(e) {
+                const scrollAmount = 30;
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    messages.scrollTop -= scrollAmount;
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    messages.scrollTop += scrollAmount;
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    messages.scrollTop = 0;
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    scrollToBottom();
+                }
+            });
+
+            // Add touch support for mobile devices
+            let startY = 0;
+            messages.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+
+            messages.addEventListener('touchmove', function(e) {
+                const currentY = e.touches[0].clientY;
+                const deltaY = startY - currentY;
+                messages.scrollTop += deltaY * 0.5;
+                startY = currentY;
+            }, { passive: true });
+        }
+
+        // Add message to chat
+        function addMessage(content, isUser = false) {
+            const messages = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    ${content}
+                    <div class="message-time">${timeString}</div>
+                </div>
+            `;
+            
+            messages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Show typing indicator
+        function showTyping() {
+            if (isTyping) return;
+            isTyping = true;
+            
+            const messages = document.getElementById('messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            
+            messages.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        // Hide typing indicator
+        function hideTyping() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+            isTyping = false;
+        }
+
+        // Send message
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || isTyping) return;
+
+            // Add user message
+            addMessage(message, true);
+            input.value = '';
+
+            // Show typing indicator
+            showTyping();
+
+            try {
+                // Simulate API call (replace with actual API endpoint)
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: message }]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API Error:', errorText);
+                    throw new Error(`API Error: ${response.status} - ${errorText}`);
+                }
+
+                const data = await response.json();
+                hideTyping();
+                
+                // Add assistant response with better error handling
+                const responseText = data.message || data.response || data.error || 'I apologize, but I encountered an error. Please try again.';
+                addMessage(responseText);
+                
+                // Ensure input remains focused after response
+                setTimeout(() => {
+                    if (input) {
+                        input.focus();
+                    }
+                }, 100);
+                
+            } catch (error) {
+                hideTyping();
+                console.error('Error:', error);
+                
+                // Enhanced fallback response based on message content
+                const messageLower = message.toLowerCase();
+                let fallbackResponse = '';
+                
+                if (messageLower.includes('hello') || messageLower.includes('hi')) {
+                    fallbackResponse = 'Hello! I\'m Zubaida\'s AI assistant. I\'m here to help you learn about her content strategy and copywriting services. How can I assist you today?';
+                } else if (messageLower.includes('service') || messageLower.includes('what')) {
+                    fallbackResponse = 'Zubaida specializes in AI-powered content strategy, email copywriting, and social media content creation. She helps B2B and tech companies create compelling content that drives results.';
+                } else if (messageLower.includes('contact') || messageLower.includes('email')) {
+                    fallbackResponse = 'You can reach Zubaida directly at zubimalik5656@gmail.com. She\'s always happy to discuss your content needs!';
+                } else {
+                    fallbackResponse = 'I\'m experiencing some technical difficulties right now. For immediate assistance, please contact Zubaida directly at zubimalik5656@gmail.com. She\'d be happy to help with your content strategy needs!';
+                }
+                
+                addMessage(fallbackResponse);
+                
+                // Ensure input remains focused after error response
+                setTimeout(() => {
+                    if (input) {
+                        input.focus();
+                    }
+                }, 100);
+            }
+        }
+
+
+        // Toggle mode (placeholder)
+        function toggleMode() {
+            // This would toggle between side and center modes
+            console.log('Toggle mode clicked');
+        }
+
+        // Close chat
+        function closeChat() {
+            // This would close the chat widget
+            window.close();
+        }
+
+        // Handle Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Initialize enhanced scrolling
+        enhanceScrolling();
+        
+        // Initial scroll
+        scrollToBottom();
+    </script>
+</body>
+</html>
