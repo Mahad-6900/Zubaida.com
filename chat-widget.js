@@ -106,7 +106,7 @@ class ChatWidget {
                   width: 56px;
                   height: 56px;
                   border-radius: 50%;
-                  background: #FF6B5A;
+                  background: #ffb85a;
                   color: white;
                   border: none;
                   cursor: pointer;
@@ -118,9 +118,9 @@ class ChatWidget {
                   font-size: 24px;
                   transition: all 0.3s ease;
               }
-  
+
               .chat-button:hover {
-                  background: #FF6B5A;
+                  background: #ffb85a;
                   opacity: 0.9;
                   transform: scale(1.05);
               }
@@ -162,7 +162,7 @@ class ChatWidget {
               }
   
               .chat-widget .chat-header {
-                  background: #FF6B5A;
+                  background: #ffb85a;
                   color: white;
                   padding: 16px;
                   display: flex;
@@ -251,12 +251,12 @@ class ChatWidget {
               }
 
               .chat-widget .chat-messages::-webkit-scrollbar-thumb {
-                  background: #FF6B5A;
+                  background: #ffb85a;
                   border-radius: 4px;
               }
 
               .chat-widget .chat-messages::-webkit-scrollbar-thumb:hover {
-                  background: #FF8A7A;
+                  background: #ffc870;
               }
   
               .chat-widget .message {
@@ -282,7 +282,7 @@ class ChatWidget {
               }
   
               .chat-widget .message.user .message-content {
-                  background: #FF6B5A;
+                  background: #ffb85a;
                   color: white;
               }
   
@@ -359,7 +359,7 @@ class ChatWidget {
   
               .chat-widget .chat-input input:focus {
                   outline: none;
-                  border-color: #FF6B5A;
+                  border-color: #ffb85a;
               }
   
               .chat-widget .chat-input button {
@@ -378,12 +378,12 @@ class ChatWidget {
               }
   
               .chat-widget .chat-input button.send {
-                  background: #FF6B5A;
-                  border-color: #FF6B5A;
+                  background: #ffb85a;
+                  border-color: #ffb85a;
               }
-  
+
               .chat-widget .chat-input button.send:hover {
-                  background: #FF6B5A;
+                  background: #ffb85a;
                   opacity: 0.9;
               }
   
