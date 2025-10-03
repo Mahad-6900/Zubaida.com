@@ -14,12 +14,6 @@ app.use(express.static('.'));
 // Parse JSON bodies
 app.use(express.json());
 
-// Import and use the chat API
-const chatHandler = require('./api/chat.js');
-
-// Route for chat API
-app.post('/api/chat', chatHandler.default || chatHandler);
-
 // Serve HTML files
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'));
