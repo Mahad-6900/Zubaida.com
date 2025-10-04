@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Scrollable Chat History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0A1628;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .chat-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #0A1628;
+        }
+
+        .chat-header {
+            background: #ffb85a;
+            color: white;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-header-text h3 {
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .chat-header-text p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .chat-header-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chat-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .chat-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            background: #0A1628;
+            position: relative;
+            z-index: 1;
+            display: block;
+            box-sizing: border-box;
+        }
+
+
+        .message {
+            margin-bottom: 16px;
+        }
+
+        .message.user {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .message.assistant {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.user .message-content {
+            background: #ffb85a;
+            color: white;
+        }
+
+        .message.assistant .message-content {
+            background: #1A2942;
+            color: white;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #9CA3AF;
+            margin-top: 4px;
+        }
+
+        .chat-input {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            background: #0A1628;
+            border-top: 1px solid #374151;
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            z-index: 1000;
+            width: 100%;
+            box-sizing: border-box;
+            height: 80px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            background: #1A2942;
+            border: 1px solid #374151;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .chat-input input::placeholder {
+            color: #9CA3AF;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: #ffb85a;
+        }
+
+        .chat-input button {
+            background: #1A2942;
+            border: 1px solid #374151;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .chat-input button:hover {
+            background: #1A2942;
+            opacity: 0.8;
+        }
+
+        .chat-input button.send {
+            background: #ffb85a;
+            border-color: #ffb85a;
+        }
+
+        .chat-input button.send:hover {
+            background: #ffb85a;
+            opacity: 0.9;
+        }
+
+        .welcome-message {
+            background: #1A2942;
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .welcome-message p {
+            margin: 0;
+        }
+
+        .welcome-time {
+            font-size: 12px;
+            color: #9CA3AF;
+            margin-top: 8px;
+        }
+
+        .test-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(26, 41, 66, 0.9);
+            border: 1px solid #ffb85a;
+            border-radius: 8px;
+            padding: 16px;
+            z-index: 1001;
+        }
+
+        .test-controls button {
+            background: #ffb85a;
+            border: none;
+            color: #0A1628;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 4px;
+            font-weight: 600;
+        }
+
+        .test-controls button:hover {
+            background: #ffc870;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .message-content {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="chat-header-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chat-header-text">
+                    <h3>Scrollable Chat Test</h3>
+                    <p>Test the scrollable chat history feature</p>
+                </div>
+            </div>
+            <div class="chat-header-controls">
+                <button class="chat-btn" onclick="clearChat()" title="Clear Chat">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="messages">
+            <div class="message assistant">
+                <div class="message-content">
+                    <div class="welcome-message">
+                        <p>
+                            Welcome to the scrollable chat test! This chat window demonstrates the scrollable chat history feature. 
+                            The input bar stays fixed at the bottom while you can scroll through all messages above it. 
+                            Try adding multiple messages to see the scrolling in action!
+                        </p>
+                        <div class="welcome-time">Test Started</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Type a message to test scrolling..." autocomplete="off">
+            <button class="send" onclick="sendMessage()" title="Send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Test Controls -->
+    <div class="test-controls">
+        <h4 style="color: #ffb85a; margin-bottom: 8px;">Test Controls</h4>
+        <button onclick="addTestMessages()">Add 10 Test Messages</button>
+        <button onclick="addLongMessage()">Add Long Message</button>
+        <button onclick="clearChat()">Clear Chat</button>
+    </div>
+
+    <script>
+        let messageCount = 0;
+
+
+        // Add message to chat
+        function addMessage(content, isUser = false) {
+            const messages = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    ${content}
+                    <div class="message-time">${timeString}</div>
+                </div>
+            `;
+            
+            messages.appendChild(messageDiv);
+        }
+
+        // Send message
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, true);
+            input.value = '';
+
+            // Simulate bot response
+            setTimeout(() => {
+                const responses = [
+                    "That's an interesting question! Let me help you with that.",
+                    "I understand what you're asking. Here's what I think...",
+                    "Great point! Let me provide some insights on that topic.",
+                    "I see what you mean. Here's my perspective on that.",
+                    "Thanks for sharing that! I have some thoughts on the matter.",
+                    "That's a good question. Let me break it down for you.",
+                    "I appreciate you bringing that up. Here's what I know...",
+                    "Interesting! Let me share some information about that.",
+                    "I can help with that! Here's what I suggest...",
+                    "That's a great topic to discuss. Let me elaborate..."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse);
+            }, 1000);
+        }
+
+        // Add test messages
+        function addTestMessages() {
+            for (let i = 1; i <= 10; i++) {
+                setTimeout(() => {
+                    addMessage(`Test message ${i} - This is a longer message to test the scrolling functionality. The chat should automatically scroll to show new messages.`, i % 2 === 0);
+                }, i * 200);
+            }
+        }
+
+        // Add long message
+        function addLongMessage() {
+            const longText = "This is a very long message designed to test the scrolling functionality of the chat window. " +
+                           "It contains multiple sentences and should wrap to multiple lines, making the chat window scrollable. " +
+                           "The input bar should remain fixed at the bottom while this content scrolls above it. " +
+                           "This demonstrates the proper implementation of the scrollable chat history feature. " +
+                           "Users can scroll up and down to see older messages while the input area stays in place.";
+            addMessage(longText, false);
+        }
+
+        // Clear chat
+        function clearChat() {
+            const messages = document.getElementById('messages');
+            messages.innerHTML = `
+                <div class="message assistant">
+                    <div class="message-content">
+                        <div class="welcome-message">
+                            <p>Chat cleared! Try adding some messages to test the chat functionality.</p>
+                            <div class="welcome-time">Chat Cleared</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Handle Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+    </script>
+</body>
+</html>

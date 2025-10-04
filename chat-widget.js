@@ -84,7 +84,8 @@ class ChatWidget {
                           </div>
                       </div>
                   </div>
-  
+  <br />
+  <br />
                   <!-- Input -->
                   <div class="chat-input">
                       <input type="text" id="chat-message-input" placeholder="Ask me anything..." autocomplete="off">
@@ -97,6 +98,13 @@ class ChatWidget {
     }
   
     addStyles() {
+      // Link to external CSS from chat-styles.css
+      const link = document.createElement("link")
+      link.rel = "stylesheet"
+      link.href = "chat-styles.css"
+      document.head.appendChild(link)
+      
+      // Add only widget-specific styles
       const style = document.createElement("style")
       style.textContent = `
               .chat-button {
@@ -161,172 +169,6 @@ class ChatWidget {
                   overflow: hidden;
               }
   
-              .chat-widget .chat-header {
-                  background: #ffb85a;
-                  color: white;
-                  padding: 16px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  flex-shrink: 0;
-              }
-  
-              .chat-widget .chat-header-left {
-                  display: flex;
-                  align-items: center;
-                  gap: 12px;
-              }
-  
-              .chat-widget .chat-header-icon {
-                  width: 40px;
-                  height: 40px;
-                  background: rgba(255, 255, 255, 0.2);
-                  border-radius: 8px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-              }
-  
-              .chat-widget .chat-header-text h3 {
-                  font-weight: 600;
-                  margin: 0;
-                  font-size: 16px;
-              }
-  
-              .chat-widget .chat-header-text p {
-                  font-size: 12px;
-                  opacity: 0.9;
-                  margin: 0;
-              }
-  
-              .chat-widget .chat-header-controls {
-                  display: flex;
-                  align-items: center;
-                  gap: 4px;
-              }
-  
-              .chat-widget .chat-btn {
-                  background: transparent;
-                  border: none;
-                  color: white;
-                  width: 32px;
-                  height: 32px;
-                  border-radius: 4px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  cursor: pointer;
-                  transition: background-color 0.2s;
-              }
-  
-              .chat-widget .chat-btn:hover {
-                  background: rgba(255, 255, 255, 0.2);
-              }
-  
-              .chat-widget .chat-messages {
-                  flex: 1;
-                  min-height: 0;
-                  max-height: calc(100% - 140px);
-                  padding: 16px;
-                  padding-bottom: 80px;
-                  overflow-y: auto;
-                  overflow-x: hidden;
-                  background: #0A1628;
-                  scroll-behavior: smooth;
-                  scrollbar-width: thin;
-                  scrollbar-color:rgb(255, 211, 90) #1A2942;
-                  /* Ensure smooth scrolling and proper containment */
-                  position: relative;
-                  z-index: 1;
-              }
-
-              /* Custom scrollbar for webkit browsers */
-              .chat-widget .chat-messages::-webkit-scrollbar {
-                  width: 8px;
-              }
-
-              .chat-widget .chat-messages::-webkit-scrollbar-track {
-                  background: #1A2942;
-                  border-radius: 4px;
-              }
-
-              .chat-widget .chat-messages::-webkit-scrollbar-thumb {
-                  background: #ffb85a;
-                  border-radius: 4px;
-              }
-
-              .chat-widget .chat-messages::-webkit-scrollbar-thumb:hover {
-                  background: #ffc870;
-              }
-  
-              .chat-widget .message {
-                  margin-bottom: 16px;
-              }
-  
-              .chat-widget .message.user {
-                  display: flex;
-                  justify-content: flex-end;
-              }
-  
-              .chat-widget .message.assistant {
-                  display: flex;
-                  justify-content: flex-start;
-              }
-  
-              .chat-widget .message-content {
-                  max-width: 80%;
-                  padding: 12px 16px;
-                  border-radius: 8px;
-                  font-size: 14px;
-                  line-height: 1.5;
-              }
-  
-              .chat-widget .message.user .message-content {
-                  background: #ffb85a;
-                  color: white;
-              }
-  
-              .chat-widget .message.assistant .message-content {
-                  background: #1A2942;
-                  color: white;
-              }
-  
-              .chat-widget .message-time {
-                  font-size: 12px;
-                  color: #9CA3AF;
-                  margin-top: 4px;
-              }
-  
-              .chat-widget .typing-indicator {
-                  display: flex;
-                  justify-content: flex-start;
-                  margin-bottom: 16px;
-              }
-  
-              .chat-widget .typing-dots {
-                  background: #1A2942;
-                  padding: 12px 16px;
-                  border-radius: 8px;
-                  display: flex;
-                  gap: 4px;
-              }
-  
-              .chat-widget .typing-dot {
-                  width: 8px;
-                  height: 8px;
-                  background: #9CA3AF;
-                  border-radius: 50%;
-                  animation: bounce 1.4s infinite ease-in-out;
-              }
-  
-              .chat-widget .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-              .chat-widget .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-  
-              @keyframes bounce {
-                  0%, 80%, 100% { transform: scale(0); }
-                  40% { transform: scale(1); }
-              }
-  
               .chat-widget .chat-input {
                   position: absolute;
                   bottom: 0;
@@ -341,70 +183,7 @@ class ChatWidget {
                   z-index: 10;
                   width: 100%;
                   box-sizing: border-box;
-              }
-  
-              .chat-widget .chat-input input {
-                  flex: 1;
-                  background: #1A2942;
-                  border: 1px solid #374151;
-                  color: white;
-                  padding: 12px;
-                  border-radius: 6px;
-                  font-size: 14px;
-              }
-  
-              .chat-widget .chat-input input::placeholder {
-                  color: #9CA3AF;
-              }
-  
-              .chat-widget .chat-input input:focus {
-                  outline: none;
-                  border-color: #ffb85a;
-              }
-  
-              .chat-widget .chat-input button {
-                  background: #1A2942;
-                  border: 1px solid #374151;
-                  color: white;
-                  padding: 12px;
-                  border-radius: 6px;
-                  cursor: pointer;
-                  transition: background-color 0.2s;
-              }
-  
-              .chat-widget .chat-input button:hover {
-                  background: #1A2942;
-                  opacity: 0.8;
-              }
-  
-              .chat-widget .chat-input button.send {
-                  background: #ffb85a;
-                  border-color: #ffb85a;
-              }
-
-              .chat-widget .chat-input button.send:hover {
-                  background: #ffb85a;
-                  opacity: 0.9;
-              }
-  
-              .chat-widget .welcome-message {
-                  background: #1A2942;
-                  color: white;
-                  padding: 16px;
-                  border-radius: 8px;
-                  font-size: 14px;
-                  line-height: 1.5;
-                  margin-bottom: 16px;
-              }
-  
-              .chat-widget .welcome-message p {
-                  margin: 0;
-              }
-  
-              .chat-widget .welcome-time {
-                  font-size: 12px;
-                  color: #9CA3AF;
-                  margin-top: 8px;
+                  height: 80px;
               }
   
               /* Center mode overlay */
@@ -453,10 +232,11 @@ class ChatWidget {
       const widget = document.getElementById("chat-widget")
       widget.classList.remove("hidden")
       widget.className = `chat-widget ${this.mode}`
-  
+
       // Hide chat button
       document.getElementById("chat-button").style.display = "none"
-  
+
+
       // Focus input
       setTimeout(() => {
         const input = document.getElementById("chat-message-input")
@@ -487,27 +267,38 @@ class ChatWidget {
       }
     }
   
+    scrollToBottom() {
+      const messages = document.getElementById("chat-messages")
+      if (messages) {
+        messages.scrollTop = messages.scrollHeight
+      }
+    }
+
     addMessage(content, isUser = false) {
       const messages = document.getElementById("chat-messages")
       const messageDiv = document.createElement("div")
       messageDiv.className = `message ${isUser ? "user" : "assistant"}`
-  
+
       const now = new Date()
       const timeString = now.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
       })
-  
+
       messageDiv.innerHTML = `
               <div class="message-content">
                   ${content}
                   <div class="message-time">${timeString}</div>
               </div>
           `
-  
+
       messages.appendChild(messageDiv)
-      this.scrollToBottom()
+      
+      // Auto-scroll to bottom when new message is added
+      setTimeout(() => {
+        this.scrollToBottom()
+      }, 100)
     }
   
     showTyping() {
@@ -522,9 +313,13 @@ class ChatWidget {
                   <div class="typing-dot"></div>
               </div>
           `
-  
+
       messages.appendChild(typingDiv)
-      this.scrollToBottom()
+      
+      // Auto-scroll to bottom when typing indicator is shown
+      setTimeout(() => {
+        this.scrollToBottom()
+      }, 100)
     }
   
     hideTyping() {
@@ -618,70 +413,12 @@ class ChatWidget {
     }
   
   
-    scrollToBottom() {
-      const messages = document.getElementById("chat-messages")
-      messages.scrollTop = messages.scrollHeight
-    }
 
-    enhanceScrolling() {
-      const messages = document.getElementById("chat-messages")
-      
-      // Add smooth scrolling on mouse wheel with better sensitivity
-      messages.addEventListener('wheel', function(e) {
-        e.preventDefault()
-        const delta = e.deltaY
-        const scrollAmount = 30 // Reduced for smoother scrolling
-        
-        if (delta > 0) {
-          // Scrolling down
-          messages.scrollTop += scrollAmount
-        } else {
-          // Scrolling up
-          messages.scrollTop -= scrollAmount
-        }
-      }, { passive: false })
 
-      // Add keyboard navigation support
-      messages.addEventListener('keydown', function(e) {
-        const scrollAmount = 30
-        if (e.key === 'ArrowUp') {
-          e.preventDefault()
-          messages.scrollTop -= scrollAmount
-        } else if (e.key === 'ArrowDown') {
-          e.preventDefault()
-          messages.scrollTop += scrollAmount
-        } else if (e.key === 'Home') {
-          e.preventDefault()
-          messages.scrollTop = 0
-        } else if (e.key === 'End') {
-          e.preventDefault()
-          this.scrollToBottom()
-        }
-      }.bind(this))
-
-      // Add touch support for mobile devices
-      let startY = 0
-      messages.addEventListener('touchstart', function(e) {
-        startY = e.touches[0].clientY
-      }, { passive: true })
-
-      messages.addEventListener('touchmove', function(e) {
-        const currentY = e.touches[0].clientY
-        const deltaY = startY - currentY
-        messages.scrollTop += deltaY * 0.5
-        startY = currentY
-      }, { passive: true })
-    }
   }
   
   // Initialize chat widget when DOM is loaded
   document.addEventListener("DOMContentLoaded", () => {
     window.chatWidget = new ChatWidget()
-    // Initialize enhanced scrolling after a short delay to ensure DOM is ready
-    setTimeout(() => {
-      if (window.chatWidget) {
-        window.chatWidget.enhanceScrolling()
-      }
-    }, 100)
   })
   
